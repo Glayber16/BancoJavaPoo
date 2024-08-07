@@ -1,4 +1,4 @@
-package contas;
+package br.ufc.dc.poo.conta.Conta;
 
 public class ContaPoupanca extends Conta {
 

@@ -1,7 +1,11 @@
-package contas;
+package br.ufc.dc.poo.main.Main;
 
+import br.ufc.dc.poo.auditor.Auditor.AuditorBancoGenerico;
 import br.ufc.dc.poo.banco.Banco.BancoArray;
 import br.ufc.dc.poo.banco.Banco.BancoVector;
+import br.ufc.dc.poo.conta.Conta.Conta;
+import br.ufc.dc.poo.conta.Conta.ContaEspecial;
+import br.ufc.dc.poo.conta.Conta.ContaPoupanca;
 
 public class Main {
 
@@ -29,13 +33,17 @@ public class Main {
 		bb.transferir("222", "333", 5);
 		bb.render("333", 0);
 		BancoVector nu = new BancoVector();
-		nu.addConta(a);
-		nu.addConta(e);
+		nu.cadastrar(a);
+		nu.cadastrar(e);
 		nu.transferir("555", "444", 50);
 		nu.render("555", 0.2);
 		System.out.println("poupanca" + " " + nu.saldo("555"));
 		System.out.println("poupanca" + " " + nu.saldo("444"));
 		System.out.println("especial" + " " + bb.saldo("333"));
+		AuditorBancoGenerico auditor = new AuditorBancoGenerico();
+		auditor.auditar(bb);
+		auditor.auditar(nu);
+		System.out.println(nu.numeroTotal());
 	}
 
 }

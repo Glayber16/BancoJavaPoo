@@ -1,4 +1,4 @@
-package contas;
+package br.ufc.dc.poo.conta.Conta;
 
 public abstract class ContaAbstrata {
 	protected String numero;
@@ -12,10 +12,10 @@ public abstract class ContaAbstrata {
 	public void creditar (double valor) {
 		saldo = saldo + valor;
 	}
-	
 	public void debitar (double valor) {
 		saldo = saldo - valor;
 	}
+	
 	
 	public String numero () {
 		return numero;

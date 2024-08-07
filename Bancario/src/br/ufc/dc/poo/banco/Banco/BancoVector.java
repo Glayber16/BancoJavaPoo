@@ -1,24 +1,25 @@
 package br.ufc.dc.poo.banco.Banco;
-import contas.Conta;
-
-import contas.ContaEspecial;
-
-import contas.ContaPoupanca;
-
 import java.util.Vector;
-public class BancoVector {
-	private Vector<Conta> vetorBanco;
+
+import br.ufc.dc.poo.conta.Conta.Conta;
+import br.ufc.dc.poo.conta.Conta.ContaAbstrata;
+import br.ufc.dc.poo.conta.Conta.ContaEspecial;
+import br.ufc.dc.poo.conta.Conta.ContaPoupanca;
+public class BancoVector implements IBanco{
+	private Vector<ContaAbstrata> vetorBanco;
 	
 	public BancoVector() {
-		vetorBanco = new Vector<Conta>();
+		vetorBanco = new Vector<ContaAbstrata>();
 	}
 	
-	public void addConta(Conta conta) {
+	public void cadastrar(ContaAbstrata conta) {
 		vetorBanco.add(conta);
 	}
-	
-	private Conta procurar(String numero) {
-        for (Conta conta : vetorBanco) {
+	public int numeroTotal() {
+		return vetorBanco.size();
+	}
+	public ContaAbstrata procurar(String numero) {
+        for (ContaAbstrata conta : vetorBanco) {
             if (conta.numero().equals(numero)) {
                 return conta;
             }
@@ -27,7 +28,7 @@ public class BancoVector {
     }
 
     public void creditar(String numero, double valor) {
-        Conta c = procurar(numero);
+        ContaAbstrata c = procurar(numero);
         if (c != null) {
             c.debitar(valor);
         } else {
@@ -36,7 +37,7 @@ public class BancoVector {
     }
 
     public void debitar(String numero, double valor) {
-        Conta c = procurar(numero);
+        ContaAbstrata c = procurar(numero);
         if (c != null) {
             c.debitar(valor);
         } else {
@@ -45,7 +46,7 @@ public class BancoVector {
     }
 
     public double saldo(String numero) {
-        Conta c = procurar(numero);
+    	ContaAbstrata c = procurar(numero);
         if (c != null) {
             return c.saldo();
         } else {
@@ -54,8 +55,8 @@ public class BancoVector {
     }
 
     public void transferir(String origem, String destino, double valor) {
-        Conta c = procurar(origem);
-        Conta d = procurar(destino);
+        ContaAbstrata c = procurar(origem);
+        ContaAbstrata d = procurar(destino);
         if (c != null && d != null) {
             c.debitar(valor);
             d.creditar(valor);
@@ -63,8 +64,15 @@ public class BancoVector {
             System.out.println("Alguma das contas não foi encontrada");
         }
     }
+    public double saldoTotal() {
+    	double total = 0;
+    	for (ContaAbstrata conta : vetorBanco) {
+    		total = conta.saldo() + total;
+    	}
+    	return total;
+    }
     public void render(String numero, double taxa) {
-		Conta c = procurar(numero);
+    	ContaAbstrata c = procurar(numero);
 		if(c instanceof ContaPoupanca) {
 			((ContaPoupanca) c).renderJuros(taxa);
 		}
@@ -72,6 +80,11 @@ public class BancoVector {
 			((ContaEspecial) c).renderBonus();
 		}
 	}
+
+	
+	
+
+	
     
 }
 
