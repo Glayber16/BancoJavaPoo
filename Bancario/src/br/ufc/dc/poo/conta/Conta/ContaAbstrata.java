@@ -1,7 +1,10 @@
 package br.ufc.dc.poo.conta.Conta;
 
-public abstract class ContaAbstrata {
-	protected String numero;
+import java.io.Serializable;
+
+public abstract class ContaAbstrata implements Serializable {
+	private static final long serialVersionUID = 1L;
+	public String numero;
 	protected double saldo;
 	
 	public ContaAbstrata(String numero) {

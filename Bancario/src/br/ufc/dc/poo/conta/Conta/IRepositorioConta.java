@@ -1,9 +1,13 @@
 package br.ufc.dc.poo.conta.Conta;
 
+import java.util.List;
+
 public interface IRepositorioConta {
-	public void inserir(ContaAbstrata conta);
+	public void inserir(Conta conta);
 	public void remover(String numero);
-	public ContaAbstrata procurar(String numero);
-	public ContaAbstrata[] listar();
+	public Conta procurar(String numero);
+	public List<Conta> listar();
 	public int tamanho();
+	public void render(String numero, double taxa);
+	
 }

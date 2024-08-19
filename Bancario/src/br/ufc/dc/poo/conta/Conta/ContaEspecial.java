@@ -1,6 +1,10 @@
 package br.ufc.dc.poo.conta.Conta;
 
-public class ContaEspecial extends Conta {
+import java.io.Serializable;
+
+public class ContaEspecial extends Conta implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	private double bonus;
 	public ContaEspecial(String numero) {
 		super(numero);

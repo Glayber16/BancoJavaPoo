@@ -1,35 +1,66 @@
 package br.ufc.dc.poo.conta.Conta;
 
-public class VectorConta implements IRepositorioConta{
+import java.util.List;
+import java.util.Vector;
 
-	@Override
-	public void inserir(ContaAbstrata conta) {
-		// TODO Auto-generated method stub
+public class VectorConta implements IRepositorioConta{
+	private Vector<Conta> vetorConta;
+
+	
+	 public VectorConta() {
+	        vetorConta = new Vector<>();
+	    }
+
+	public void inserir(Conta conta) {
+		vetorConta.add(conta);
 		
 	}
 
 	@Override
 	public void remover(String numero) {
-		// TODO Auto-generated method stub
+		 for (int i = 0; i < vetorConta.size(); i++) {
+		        if (vetorConta.get(i).numero().equals(numero)) {
+		            vetorConta.remove(i);
+		            break;
+	            }
+	        }
 		
 	}
 
 	@Override
-	public ContaAbstrata procurar(String numero) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Conta procurar(String numero) {
+		for (Conta conta : vetorConta) {
+            if (conta.numero().equals(numero)) {
+                return conta;
+            }
+        }
+        return null;
+    }
+
 
 	@Override
-	public ContaAbstrata[] listar() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Conta> listar() {
+		
+		return vetorConta;
 	}
 
 	@Override
 	public int tamanho() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return vetorConta.size();
 	}
+
+	@Override
+	public void render(String numero, double taxa) {
+		ContaAbstrata c = procurar(numero);
+		if(c instanceof ContaPoupanca) {
+			((ContaPoupanca) c).renderJuros(taxa);
+		}
+		if(c instanceof ContaEspecial) {
+			((ContaEspecial) c).renderBonus();
+		}
+	}
+		
+
 
 }

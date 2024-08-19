@@ -1,15 +1,23 @@
 package br.ufc.dc.poo.main.Main;
 
+import com.google.gson.*;
+
 import br.ufc.dc.poo.auditor.Auditor.AuditorBancoGenerico;
 import br.ufc.dc.poo.banco.Banco.BancoArray;
+import br.ufc.dc.poo.banco.Banco.BancoIndependente;
 import br.ufc.dc.poo.banco.Banco.BancoVector;
+import br.ufc.dc.poo.banco.Banco.CIException;
+import br.ufc.dc.poo.conta.Conta.ArrayConta;
 import br.ufc.dc.poo.conta.Conta.Conta;
+import br.ufc.dc.poo.conta.Conta.ContaArquivo;
 import br.ufc.dc.poo.conta.Conta.ContaEspecial;
+import br.ufc.dc.poo.conta.Conta.ContaJson;
 import br.ufc.dc.poo.conta.Conta.ContaPoupanca;
+import br.ufc.dc.poo.conta.Conta.VectorConta;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws CIException {
 		// TODO Auto-generated method stub
 		Conta c;
 		c = new ContaEspecial("222");
@@ -25,25 +33,31 @@ public class Main {
 		Conta e;
 		e = new ContaPoupanca("444");
 		e.creditar(100);
-		BancoArray bb = new BancoArray();
-		bb.cadastrar(c);
-		bb.cadastrar(d);
-		bb.creditar("222", 5);
-		bb.saldo("222");
-		bb.transferir("222", "333", 5);
-		bb.render("333", 0);
-		BancoVector nu = new BancoVector();
-		nu.cadastrar(a);
-		nu.cadastrar(e);
-		nu.transferir("555", "444", 50);
-		nu.render("555", 0.2);
+		VectorConta contas = new VectorConta();
+		contas.inserir(a);
+		contas.inserir(c);
+		contas.inserir(e);
+		contas.inserir(d);
+		BancoIndependente nu = new BancoIndependente(contas);
 		System.out.println("poupanca" + " " + nu.saldo("555"));
 		System.out.println("poupanca" + " " + nu.saldo("444"));
-		System.out.println("especial" + " " + bb.saldo("333"));
+		System.out.println("especial" + " " + nu.saldo("333"));
+		
 		AuditorBancoGenerico auditor = new AuditorBancoGenerico();
-		auditor.auditar(bb);
 		auditor.auditar(nu);
 		System.out.println(nu.numeroTotal());
+		nu.creditar("444", 50);
+		System.out.println("poupanca" + " " + nu.saldo("444"));
+		nu.creditar("333", 50);
+		nu.render("333", 0);
+		nu.render("444", 0.5);
+		System.out.println("poupanca" + " " + nu.saldo("444"));
+		System.out.println("especial" + " " + nu.saldo("333"));
+		ContaJson teste2 = new ContaJson();
+		teste2.inserir(a);
+		System.out.println(teste2.tamanho());
+		System.out.println(teste2.listar());
+		System.out.println(teste2.tamanho());
 	}
 
 }

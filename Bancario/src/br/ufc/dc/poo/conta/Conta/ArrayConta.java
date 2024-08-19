@@ -1,21 +1,33 @@
 package br.ufc.dc.poo.conta.Conta;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ArrayConta implements IRepositorioConta{
 	private ContaAbstrata[] contas;
 	private int indice = 0;
 	
 	public ArrayConta() {
-		contas = new ContaAbstrata[indice];
+		contas = new ContaAbstrata[100];
 	}
 	
 	public void inserir(ContaAbstrata conta) {
-		
+		contas[indice] = conta;
+		indice++;
 		
 	}
 
 	@Override
 	public void remover(String numero) {
-		// TODO Auto-generated method stub
+		for(int i = 0; i < indice; i++ ) {
+			if(contas[i].numero().equals(numero)) {
+				for(; i<indice-1; i++) {
+					contas[i] = contas[i+1];
+				}
+				indice--;
+			}
+		
+		}
 		
 	}
 
@@ -31,20 +43,32 @@ public class ArrayConta implements IRepositorioConta{
 	}
 
 	@Override
-	public ContaAbstrata[] listar() {
-		int n = tamanho();
-		ContaAbstrata c;
-		for(int i = 0; i < n; i++) {
-			
+	public List<ContaAbstrata> listar() {
+		ContaAbstrata[] listaContas = new ContaAbstrata[indice];
+		    
+		for (int i = 0; i < indice; i++) {
+			listaContas[i] = contas[i];
 		}
-		
-		
+		    
+		return Arrays.asList(listaContas);
 	}
 
 	@Override
 	public int tamanho() {
 		
-		return 0;
+		return indice;
+	}
+
+	@Override
+	public void render(String numero, double taxa) {
+		ContaAbstrata c = procurar(numero);
+		if(c instanceof ContaPoupanca) {
+			((ContaPoupanca) c).renderJuros(taxa);
+		}
+		if(c instanceof ContaEspecial) {
+			((ContaEspecial) c).renderBonus();
+		}
+		
 	}
 
 }
