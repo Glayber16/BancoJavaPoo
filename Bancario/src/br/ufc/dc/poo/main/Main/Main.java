@@ -53,11 +53,16 @@ public class Main {
 		nu.render("444", 0.5);
 		System.out.println("poupanca" + " " + nu.saldo("444"));
 		System.out.println("especial" + " " + nu.saldo("333"));
-		ContaJson teste2 = new ContaJson();
+		ContaJson teste2 = new ContaJson();	
 		teste2.inserir(a);
-		System.out.println(teste2.tamanho());
-		System.out.println(teste2.listar());
-		System.out.println(teste2.tamanho());
+		teste2.inserir(c);
+		BancoIndependente bb = new BancoIndependente(teste2);
+		bb.creditar("555", 200);
+		bb.creditar("222", 100);
+		bb.creditar("555", 300);
+		bb.creditar("555", 50);
+		
+		
 	}
 
 }

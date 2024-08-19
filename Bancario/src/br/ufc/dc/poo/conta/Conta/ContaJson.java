@@ -35,29 +35,42 @@ public class ContaJson implements IRepositorioConta {
     @Override
     public void inserir(Conta conta) {
         List<Conta> contas = listar();
-        contas.add(conta);
-        if(procurar(conta.numero) == null) {
-	        try (FileWriter writer = new FileWriter(arquivo)) {
-	            gson.toJson(contas, writer);
-	        } 
-	        catch (IOException e) {
-	            e.printStackTrace();
-	        }
-        }
-        else {
-        	System.out.println("Conta já está no json");
-        }
-    }
+        boolean contaExiste = false;
 
-    @Override
-    public void remover(String numero) {
-        List<Conta> contas = listar();
-        contas.removeIf(conta -> conta.numero().equals(numero));
+        for (int i = 0; i < contas.size(); i++) {
+            if (contas.get(i).numero().equals(conta.numero())) {
+                contas.set(i, conta);
+                contaExiste = true;
+                break;
+            }
+        }
+
+        if (!contaExiste) {
+            contas.add(conta);
+        }
+
+       
         try (FileWriter writer = new FileWriter(arquivo)) {
             gson.toJson(contas, writer);
         } 
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void remover(String numero) {
+    	List<Conta> contas = listar();
+        
+        if (contas != null) {
+            contas.removeIf(conta -> conta != null && conta.numero().equals(numero));
+            try {
+            	FileWriter gravador = new FileWriter(arquivo);
+                gson.toJson(contas, gravador);
+            } 
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -72,14 +85,20 @@ public class ContaJson implements IRepositorioConta {
 
     @Override
     public List<Conta> listar() {
-        try (FileReader reader = new FileReader(arquivo)) {
-            Type type = new TypeToken<ArrayList<Conta>>(){}.getType();
-            return gson.fromJson(reader, type);
+    	List<Conta> listaContas = new ArrayList<>();
+        try {
+        	FileReader leitor = new FileReader(arquivo);
+            Type tipo = new TypeToken<ArrayList<Conta>>(){}.getType();
+            listaContas = gson.fromJson(leitor, tipo);  
+            if (listaContas == null) {
+                listaContas = new ArrayList<>();
+            }
         } 
         catch (IOException e) {
             e.printStackTrace();
-            return new ArrayList<>();
+            
         }
+        return listaContas;
     }
 
     @Override

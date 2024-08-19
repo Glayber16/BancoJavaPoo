@@ -34,6 +34,7 @@ public class BancoIndependente implements IBanco {
         Conta c = repositorio.procurar(numero);
         if (c != null) {
             c.creditar(valor);
+            repositorio.inserir(c);
         } 
         else {
         	throw new CIException(numero);
@@ -42,10 +43,11 @@ public class BancoIndependente implements IBanco {
 
     @Override
     public void debitar(String numero, double valor) throws CIException, SIException {
-        ContaAbstrata c = repositorio.procurar(numero);
+        Conta c = repositorio.procurar(numero);
         if (c != null) {
             if (c.saldo() >= valor) {
                 c.debitar(valor);
+                repositorio.inserir(c);
             } 
             else {
             	throw new SIException(c.saldo(), c.numero());
@@ -58,7 +60,7 @@ public class BancoIndependente implements IBanco {
 
     @Override
     public double saldo(String numero) {
-        ContaAbstrata c = repositorio.procurar(numero);
+        Conta c = repositorio.procurar(numero);
         if (c != null) {
             return c.saldo();
         } 
@@ -69,18 +71,20 @@ public class BancoIndependente implements IBanco {
 
     @Override
     public void transferir(String origem, String destino, double valor) {
-        ContaAbstrata c = repositorio.procurar(origem);
-        ContaAbstrata d = repositorio.procurar(destino);
+        Conta c = repositorio.procurar(origem);
+        Conta d = repositorio.procurar(destino);
         if (c != null && d != null) {
             c.debitar(valor);
             d.creditar(valor);
+            repositorio.inserir(c);
+            repositorio.inserir(d);
         }
     }
 
     @Override
     public double saldoTotal() {
         double total = 0;
-        for (ContaAbstrata conta : repositorio.listar()) {
+        for (Conta conta : repositorio.listar()) {
             total += conta.saldo();
         }
         return total;
